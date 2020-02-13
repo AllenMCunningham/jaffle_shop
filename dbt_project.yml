@@ -16,7 +16,11 @@ clean-targets:
 
 models:
   jaffle_shop:
-      materialized: table
-      staging:
-        materialized: view
-        tags: ["staging", "hourly"]
+    post-hook: ["grant usage on schema {{ this.schema }} to role analyst", "grant select on {{ this }} to role analyst" ]
+    materialized: table
+    marts:
+      core:
+        tags: ["daily"]
+    staging:
+      materialized: view
+      tags: ["staging", "hourly"]
